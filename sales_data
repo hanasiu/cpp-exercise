@@ -3,13 +3,19 @@
 #include <iostream>
 
 using namespace std;
+struct Sales_data;
+std::istream& read(std::istream& is, Sales_data& item);
 
 struct Sales_data {
-    Sales_data() = default;
-    Sales_data(const std::string &s) : bookNo(s) { }
-    Sales_data(const std::string &s, unsigned n, double p) :
-        bookNo(s), units_sold(n), revenue(p*n) { }
-    Sales_data(std::istream&);
+    Sales_data() : bookNo(""), units_sold(0), revenue(0.0) {}
+    Sales_data(const std::string& no) : bookNo(no) {}
+    Sales_data(const std::string& no, unsigned us, double price)
+        : bookNo(no), units_sold(us), revenue(price* us) {}
+    Sales_data(std::istream& is) { read(is, *this); }
+    /*
+    Sales_data::Sales_data(std::istream& is) {
+        read(is, *this);
+    }*/
 
     std::string isbn() const { return bookNo; }
     Sales_data& combine(const Sales_data&);
@@ -43,36 +49,24 @@ std::ostream& print(std::ostream& os, const Sales_data& item) {
     return os;
 }
 
-Sales_data::Sales_data(std::istream& is)
-{
-    read(is, *this);
-}
 
 int main() {
-    Sales_data total;
-    if (read(std::cin, total)) {
-        //double price;
-        //if (std::cin >> total.bookNo >> total.units_sold >> price) {
-        //  total.revenue = total.units_sold * price;
-        Sales_data trans;
-        while (read(std::cin, trans)) {
-            //while (std::cin >> trans.bookNo >> trans.units_sold >> price) {
-            //  trans.revenue = trans.units_sold * price;
+    Sales_data total(std::cin);
+    //if (read(std::cin, total)) {
+    if (std::cin) {
+        Sales_data trans(std::cin);
+        //while (read(std::cin, trans)) {
+        while (std::cin) {
             if (total.isbn() == trans.isbn()) {
                 total.combine(trans);
             }
             else {
                 print(std::cout, total) << std::endl;
-                //std::cout << total.bookNo << " "
-                //          << total.units_sold << " "
-                //          << total.revenue << std::endl;
                 total = trans;  // Use default copy constructor
             }
+            read(std::cin, trans);  // Read new transaction ****************
         }
         print(std::cout, total) << std::endl;
-        //std::cout << total.bookNo << " "
-        //          << total.units_sold << " "
-        //          << total.revenue << std::endl;
     }
     else {
         std::cerr << "No data!" << std::endl;
