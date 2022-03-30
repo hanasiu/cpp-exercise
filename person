@@ -3,6 +3,7 @@
 
 using namespace std;
 struct Person {
+//public:
 	Person() = default;
 	Person(const string &s) : name(s) { }
 	Person(const string &n, const string &b) : name(n), address(b) { }
@@ -10,7 +11,7 @@ struct Person {
 
 	std::string getName() const { return name; }
 	std::string getAddress() const { return address; }
-	
+//private:
 	std::string name;
 	std::string address;
 };
