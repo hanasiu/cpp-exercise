@@ -3,6 +3,9 @@
 #include <vector>
 
 using namespace std;
+
+class Screen;
+
 class Window_mgr {
 public:
 	using ScreenIndex = std::vector<Screen>::size_type;
@@ -10,7 +13,7 @@ public:
 	Window_mgr();//??
 
 private:
-	vector<Screen> screens{ Screen(24, 80, ' ') };
+	vector<Screen> screens;
 };
 
 class Screen {
@@ -18,12 +21,14 @@ class Screen {
 public:
 	using pos = string::size_type;
 	Screen() = default;
-	Screen(pos ht, pos wd) : height(ht), width(wd), 
-		                   contents(ht* wd, ' ') {}
-	Screen(pos ht, pos wd, char c): height(ht), width(wd),
-		                            contents(ht * wd, c) {}
-	char get() const 
-	   { return contents[cursor]; }
+	Screen(pos ht, pos wd) : height(ht), width(wd),
+		contents(ht* wd, ' ') {}
+	Screen(pos ht, pos wd, char c) : height(ht), width(wd),
+		contents(ht* wd, c) {}
+	char get() const
+	{
+		return contents[cursor];
+	}
 	char get(pos ht, pos wd) const;
 
 	Screen& set(char);
@@ -43,11 +48,6 @@ private:
 	void do_display(ostream& os) const;// { os << contents; }
 };
 
-void Window_mgr::clear(ScreenIndex i)
-{
-	Screen& s = screens[i];
-	s.contents = string(s.height * s.width, ' ');
-}
 
 inline
 Screen& Screen::move(pos r, pos c)
@@ -68,7 +68,7 @@ Screen& Screen::set(char c)
 	contents[cursor] = c;
 	return *this;
 }
-inline 
+inline
 Screen& Screen::set(pos r, pos col, char ch)
 {
 	contents[r * width + col] = ch;
@@ -94,11 +94,19 @@ void Screen::do_display(ostream& os) const {
 			os << "\n";
 	}
 }
+
+Window_mgr::Window_mgr() : screens{ Screen(24, 80, ' ')} {}
+
+void Window_mgr::clear(ScreenIndex i)
+{
+	Screen& s = screens[i];
+	s.contents = string(s.height * s.width, ' ');
+}
+
 int main() {
-	Screen myScreen(5, 5, 'X');
-	myScreen.move(4, 0).set('#').display(cout);
-	cout << "\n";
-	myScreen.display(cout);
-	cout << "\n";
+
+		Window_mgr window;
+		window.clear(0);
+	
 	return 0;
 }
