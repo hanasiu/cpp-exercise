@@ -3,15 +3,17 @@
 
 using namespace std;
 struct Person {
-//public:
+	friend istream& read(istream& is, Person& rhs);
+	friend ostream& print(ostream& os, const Person& rhs);
+	public:
 	Person() = default;
-	Person(const string &s) : name(s) { }
-	Person(const string &n, const string &b) : name(n), address(b) { }
+	Person(const string& s) : name(s) { }
+	Person(const string& n, const string& b) : name(n), address(b) { }
 	Person(istream&);
 
 	std::string getName() const { return name; }
 	std::string getAddress() const { return address; }
-//private:
+	private:
 	std::string name;
 	std::string address;
 };
@@ -29,15 +31,8 @@ Person::Person(istream& is) {
 	read(is, *this);
 }
 int main() {
-	Person p1;
-	Person p2("김유");
-	Person p3("김유", "견훤로");
-	Person p4(cin);
-//	read(std::cin, p1);
-//	print(std::cout, p1) << std::endl;
-	cout << p1.name << " " << p1.address << endl
-		<< p2.name << " " << p2.address << endl
-		<< p3.name << " " << p3.address << endl
-		<< p4.name << " " << p4.address << endl;
+	Person p;
+	read(std::cin, p);
+	print(std::cout, p);
 	return 0;
 }
