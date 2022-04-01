@@ -5,15 +5,15 @@ using namespace std;
 struct Person {
 	friend istream& read(istream& is, Person& rhs);
 	friend ostream& print(ostream& os, const Person& rhs);
-	public:
+public:
 	Person() = default;
-	Person(const string& s) : name(s) { }
+	explicit Person(const string& s) : name(s) { }
 	Person(const string& n, const string& b) : name(n), address(b) { }
-	Person(istream&);
+	explicit Person(istream&);
 
 	std::string getName() const { return name; }
 	std::string getAddress() const { return address; }
-	private:
+private:
 	std::string name;
 	std::string address;
 };
