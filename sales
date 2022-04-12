@@ -69,7 +69,7 @@ inline
 double Sales_data::avg_price() const {
   return units_sold ? revenue / units_sold : 0;
 }
-
+/*
 int main() {
   Sales_data d1;
   Sales_data d2("0-201-78345-X");
@@ -101,3 +101,4 @@ int main() {
 
   return 0;
 }
+*/
