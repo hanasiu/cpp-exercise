@@ -1,0 +1,104 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stack>
+#include <array>
+#include <list>
+#include <numeric>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+void elimdups(vector<string>&);
+string make_plural(size_t, const string&, const string&);
+void biggies(vector<string>&, vector<string>::size_type);
+
+void elimdups(vector<string>& words) {
+	sort(words.begin(), words.end());
+
+	auto end_unique = unique(words.begin(), words.end());
+
+
+	words.erase(end_unique, words.end());
+	cout << "erase" << endl;
+
+	for (auto a : words) {
+		cout << a << " ";
+	}
+	cout << endl << endl;
+
+}
+
+string make_plural(size_t ctr, const string& word, const string& ending)
+{
+	return (ctr > 1) ? word + ending : word;
+}
+
+void biggies(vector<string>& words, vector<string>::size_type sz)
+{
+	elimdups(words);
+
+	stable_sort(words.begin(), words.end(),
+		[](const string& a, const string& b) {return a.size() < b.size(); });//hi kiml love peace horrible
+	cout << "stable sort" << endl;
+	for (auto a : words) {
+		cout << a << " ";
+	}
+	cout << endl << endl;
+
+
+	auto wc = partition(words.begin(), words.end(),
+		[sz](const string& a)
+		{return a.size() >= sz; });
+
+
+	auto count = wc - words.begin(); // wc는 iterator
+	cout << count << " " << make_plural(count, "word", +"s")
+		<< " of length " << sz << " or longer" << endl;
+
+	for_each(words.begin(), wc,
+		[](const string& s) {cout << s << " "; });
+	cout << endl;
+
+}
+
+void biggies_stable(vector<string>& words, vector<string>::size_type sz)
+{
+	elimdups(words);
+
+	stable_sort(words.begin(), words.end(),
+		[](const string& a, const string& b) {return a.size() < b.size(); });//hi kiml love peace horrible
+	cout << "stable sort" << endl;
+	for (auto a : words) {
+		cout << a << " ";
+	}
+	cout << endl << endl;
+
+
+	auto wc = stable_partition(words.begin(), words.end(),
+		[sz](const string& a)
+		{return a.size() >= sz; });
+
+
+	auto count = wc - words.begin(); // wc는 iterator
+	cout << count << " " << make_plural(count, "word", +"s")
+		<< " of length " << sz << " or longer" << endl;
+
+	for_each(words.begin(), wc,
+		[](const string& s) {cout << s << " "; });
+	cout << endl;
+
+}
+int main()
+{
+	vector<string> kim = { "the",  "quick", "red",  "fox", "jumps",
+							   "over", "the",   "slow", "red", "turtle" };
+	biggies(kim, 4);
+
+	cout << endl << endl;
+	biggies_stable(kim, 4);
+
+
+
+	return 0;
+}
