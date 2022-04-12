@@ -1,0 +1,42 @@
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stack>
+#include <array>
+#include <list>
+#include <numeric>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+
+
+void morefive(vector<string>& words) {
+	auto fal = partition(words.begin(), words.end(), [](const string& a) {return a.size() >= 5; });
+	for (auto a : words)
+	{
+		cout << a << " ";
+	}
+	cout << endl;
+	for (auto a=words.begin(); a != fal; ++a)
+	{
+		cout << *a << " ";
+	}
+	cout << endl;
+}
+
+
+
+
+int main()
+{
+	vector<string> kim = { "love", "peace", "horrible", "love", "peace", "hi", "hi" };
+	morefive(kim);
+
+	for (auto a : kim) {
+		cout << a << " ";
+	}
+
+	return 0;
+}
