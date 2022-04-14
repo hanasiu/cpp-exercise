@@ -58,7 +58,7 @@ void biggies(vector<string>& words, vector<string>::size_type sz)
 
 
 	auto wc = partition(words.begin(), words.end(),
-		bind(partition_sz, placeholders::_1, 6));
+		bind(partition_sz, placeholders::_1, sz));
 
 
 	auto count = wc - words.begin(); // wc는 iterator
@@ -76,7 +76,7 @@ int main()
 {
 	vector<string> kim = { "the",  "quick", "red",  "fox", "jumps",
 							   "over", "the",   "slow", "red", "turtle" };
-	biggies(kim, 4);
+	biggies(kim, 6);
 
 	return 0;
 }
