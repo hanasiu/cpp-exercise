@@ -13,10 +13,12 @@ int main()
     set<string> exclude = { "the" };
 
     string word;
-    while (cin >> word) 
+
+    while (cin >> word)
     {
-        if (exclude.find(word) == exclude.end())
-            ++word_count[word];
+        auto ret = word_count.insert({ word, 1 });
+        if (!ret.second)
+            ++ret.first->second;
     }
 
     auto map_it = word_count.cbegin();
